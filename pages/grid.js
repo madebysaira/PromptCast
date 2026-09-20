@@ -25,9 +25,12 @@ let cells = []; // [{ provider, el, iframe, errorBox, stateEl, delivered }]
 let lastQuery = "";
 let sendConfig = { autoSubmit: true };
 
-init();
+init().catch((e) => {
+  console.warn("[PromptCast] grid init without extension APIs:", e?.message || e);
+});
 
 async function init() {
+  if (!globalThis.chrome?.storage) throw new Error("no extension APIs");
   const { settings = {} } = await chrome.storage.sync.get("settings");
   const enabled = settings.enabledProviders || [];
   const custom = settings.customProviders || [];

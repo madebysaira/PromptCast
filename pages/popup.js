@@ -11,9 +11,16 @@ const promptInput = document.getElementById("promptInput");
 const providerList = document.getElementById("providerList");
 const sendStatus = document.getElementById("sendStatus");
 
-init();
+init().catch((e) => {
+  // Outside the extension (file:// preview) chrome.storage is absent.
+  // Render static chrome so the page never looks dead; dynamic rows
+  // fill in once loaded unpacked.
+  console.warn("[PromptCast] init without extension APIs:", e?.message || e);
+  document.getElementById("sendStatus").textContent = "";
+});
 
 async function init() {
+  if (!globalThis.chrome?.storage) throw new Error("no extension APIs");
   const { settings = {} } = await chrome.storage.sync.get("settings");
   const enabled = new Set(settings.enabledProviders || KNOWN);
   const custom = settings.customProviders || [];

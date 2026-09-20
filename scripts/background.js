@@ -297,8 +297,29 @@ chrome.commands.onCommand.addListener(async (command) => {
     chrome.action.openPopup?.().catch(() => {
       chrome.tabs.create({ url: chrome.runtime.getURL("pages/popup.html") });
     });
+  } else {
+    // _execute_action fallback: action popup may not open on some
+    // pages (e.g. chrome://, web store). Inject the floating overlay
+    // instead so Ctrl+Shift+X works everywhere.
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.id) return;
+    await openOverlay(tab.id);
   }
 });
+
+// Floating overlay composer ("open anywhere"). Needs activeTab +
+// scripting on the current page only — no standing host access.
+async function openOverlay(tabId) {
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ["/scripts/overlay.js"],
+    });
+  } catch {
+    // Restricted pages (chrome://, web store): fall back to a tab.
+    chrome.tabs.create({ url: chrome.runtime.getURL("pages/popup.html") });
+  }
+}
 
 // ── Popup / grid messages ────────────────────────────────────
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
@@ -313,6 +334,16 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === "gridRulesOff") {
     disableGridRules().then(() => sendResponse({ ok: true }));
     return true;
+  }
+  if (msg.type === "openGrid") {
+    chrome.tabs.create({ url: chrome.runtime.getURL("pages/grid.html") });
+    return false;
+  }
+  if (msg.type === "openOverlay") {
+    chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+      if (tab?.id) openOverlay(tab.id);
+    });
+    return false;
   }
   return false;
 });

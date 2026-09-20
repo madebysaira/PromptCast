@@ -29,9 +29,17 @@ const DEFAULTS = {
 
 let settings = { ...DEFAULTS, customProviders: [] };
 
-init();
+init().catch((e) => {
+  console.warn("[PromptCast] options init without extension APIs:", e?.message || e);
+});
 
 async function init() {
+  if (!globalThis.chrome?.storage) {
+    // Static preview: toggles render from defaults, saves no-op.
+    renderProviders();
+    wireToggles();
+    return;
+  }
   const stored = (await chrome.storage.sync.get("settings")).settings || {};
   settings = { ...DEFAULTS, customProviders: [], ...stored };
   renderProviders();
@@ -41,6 +49,7 @@ async function init() {
 }
 
 function save() {
+  if (!globalThis.chrome?.storage) return Promise.resolve(); // preview mode
   return chrome.storage.sync.set({ settings });
 }
 
