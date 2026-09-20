@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PromptCast Settings</title>
+<link rel="stylesheet" href="../styles/options.css" />
+</head>
+<body>
+<main class="options">
+  <h1>PromptCast settings</h1>
+
+  <section>
+    <h2>Providers</h2>
+    <div id="providerRows"></div>
+    <h3>Add your own</h3>
+    <form id="customForm">
+      <input id="customName" placeholder="Name (e.g. Mistral)" required />
+      <input id="customUrl" placeholder="Chat URL" type="url" required />
+      <input id="customSelector" placeholder="Input CSS selector" required />
+      <button type="submit">Add provider</button>
+    </form>
+    <p class="hint">Test it from the popup. If the prompt lands, the selector is right.</p>
+  </section>
+
+  <section>
+    <h2>Behavior</h2>
+    <label><input type="checkbox" id="autoSubmit" checked /> Submit automatically (off = prefill for review)</label>
+    <label><input type="checkbox" id="askDirect" /> Ctrl+Shift+S sends immediately (off = review first)</label>
+    <label><input type="checkbox" id="groupTabs" checked /> File new tabs into one group</label>
+  </section>
+
+  <section>
+    <h2>History</h2>
+    <label><input type="checkbox" id="enableHistory" checked /> Keep recent prompts (this device only)</label>
+    <button type="button" id="clearHistory">Clear history</button>
+  </section>
+
+  <section class="danger">
+    <h2>Reset</h2>
+    <p class="hint">Reset restores defaults but <strong>keeps your custom providers</strong>. Delete those individually below if you want them gone.</p>
+    <button type="button" id="resetAll">Reset all settings</button>
+    <div id="confirmReset" hidden>
+      <p>Reset everything except custom providers?</p>
+      <button type="button" id="confirmResetBtn">Yes, reset</button>
+      <button type="button" id="cancelResetBtn">Cancel</button>
+    </div>
+  </section>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</main>
+<script src="options.js"></script>
+</body>
+</html>

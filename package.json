@@ -1,0 +1,9 @@
+{
+  "name": "promptcast",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PromptCast - Ask Every AI at Once (Chrome extension)",
+  "scripts": {
+    "test": "node --test tests/run.js"
+  }
+}

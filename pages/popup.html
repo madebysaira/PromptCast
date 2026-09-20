@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PromptCast</title>
+<link rel="stylesheet" href="../styles/popup.css" />
+</head>
+<body>
+<main class="popup">
+  <form id="promptForm">
+    <textarea id="promptInput" rows="4" placeholder="Ask every AI at once…" aria-label="Prompt"></textarea>
+    <div class="providers" id="providerList" role="group" aria-label="AI providers"></div>
+    <div class="row">
+      <button type="submit" id="sendBtn">Send to all</button>
+      <button type="button" id="gridBtn" title="Open grid view">Grid</button>
+    </div>
+    <div id="sendStatus" role="status" aria-live="polite"></div>
+  </form>
+  <section class="recents">
+    <h2>Recent</h2>
+    <ul id="recentList"></ul>
+  </section>
+</main>
+<script src="popup.js"></script>
+</body>
+</html>

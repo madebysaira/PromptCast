@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PromptCast Grid</title>
+<link rel="stylesheet" href="../styles/grid.css" />
+</head>
+<body>
+<header class="grid-bar">
+  <form id="gridQueryForm">
+    <input id="gridQueryInput" type="text" placeholder="Ask every AI at once…" autocomplete="off" />
+    <button type="submit">Send to all</button>
+  </form>
+  <span id="gridStatus" role="status" aria-live="polite"></span>
+</header>
+<main id="gridContainer" class="grid"></main>
+<template id="cellTemplate">
+  <section class="cell">
+    <header class="cell-head">
+      <span class="cell-name"></span>
+      <span class="cell-state" role="status"></span>
+      <button class="cell-close" title="Close cell">×</button>
+    </header>
+    <div class="cell-body">
+      <iframe allow="clipboard-read; clipboard-write" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      <div class="cell-error" hidden></div>
+    </div>
+  </section>
+</template>
+<script src="grid.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/* In-page overlay mount point. The composer renders inside a closed
+   shadow root so host-page styles never leak in. Kept minimal: the
+   heavy styling lives in panel.css, injected with the shadow host. */
+#promptcast-overlay-host {
+  position: fixed;
+  z-index: 2147483647;
+}
